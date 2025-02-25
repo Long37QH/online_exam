@@ -15,11 +15,11 @@
     - If issue have label is `'Task'`, branch name start with `task/`
     - If issue have label is `'Feature'`, branch name start with `feat/`
     - If issue have label is `'Bug'`, branch name start with `fix/`
-    - After that, concat with string `kentei-[issueId]`
+    - After that, concat with string `exam-[issueId]`
 
     Example: Issue is `Feature`, Id is `123`, Name is `Create Page login`. Branch name is `feat/exam-123`
     ```
-    git checkout -b feat/kentei-123 dev
+    git checkout -b feat/exam-123 dev
     ```
 - Step 4: When commit, message of commit follow rule
     - If issue have label is `'Task'`, branch name start with `task: `
