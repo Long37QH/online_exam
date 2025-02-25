@@ -21,11 +21,6 @@
       "unique": false,
       "required": true
     },
-    "create_by": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::userss.userss"
-    },
     "questions": {
       "type": "relation",
       "relation": "oneToMany",

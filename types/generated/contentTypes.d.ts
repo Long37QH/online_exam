@@ -372,6 +372,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiAnswerAnswer extends Struct.CollectionTypeSchema {
   collectionName: 'answers';
   info: {
+    description: '';
     displayName: 'Answers';
     pluralName: 'answers';
     singularName: 'answer';
@@ -444,7 +445,6 @@ export interface ApiQuizzQuizz extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    create_by: Schema.Attribute.Relation<'oneToOne', 'api::userss.userss'>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -528,49 +528,6 @@ export interface ApiUserQuizzUserQuizz extends Struct.CollectionTypeSchema {
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<0>;
     start_at: Schema.Attribute.Time & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    user_id: Schema.Attribute.Relation<'oneToOne', 'api::userss.userss'>;
-  };
-}
-
-export interface ApiUserssUserss extends Struct.CollectionTypeSchema {
-  collectionName: 'usersss';
-  info: {
-    description: '';
-    displayName: 'Users';
-    pluralName: 'usersss';
-    singularName: 'userss';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    email: Schema.Attribute.Email &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::userss.userss'
-    > &
-      Schema.Attribute.Private;
-    name: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
-    password: Schema.Attribute.Password &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetMinMaxLength<{
-        minLength: 8;
-      }>;
-    publishedAt: Schema.Attribute.DateTime;
-    role: Schema.Attribute.Integer &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<2>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -1091,7 +1048,6 @@ declare module '@strapi/strapi' {
       'api::quizz.quizz': ApiQuizzQuizz;
       'api::user-answer.user-answer': ApiUserAnswerUserAnswer;
       'api::user-quizz.user-quizz': ApiUserQuizzUserQuizz;
-      'api::userss.userss': ApiUserssUserss;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

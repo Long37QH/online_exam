@@ -23,11 +23,6 @@
       "type": "time",
       "required": false
     },
-    "user_id": {
-      "type": "relation",
-      "relation": "oneToOne",
-      "target": "api::userss.userss"
-    },
     "quizz_id": {
       "type": "relation",
       "relation": "oneToOne",
