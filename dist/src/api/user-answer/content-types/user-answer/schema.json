@@ -1,0 +1,29 @@
+{
+    "kind": "collectionType",
+    "collectionName": "user_answers",
+    "info": {
+        "singularName": "user-answer",
+        "pluralName": "user-answers",
+        "displayName": "UserAnswer"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "attributes": {
+        "user_quizz_id": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::user-quizz.user-quizz"
+        },
+        "question_id": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::question.question"
+        },
+        "answer_id": {
+            "type": "relation",
+            "relation": "oneToOne",
+            "target": "api::answer.answer"
+        }
+    }
+}

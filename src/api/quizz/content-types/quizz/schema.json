@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "quizzes",
+  "info": {
+    "singularName": "quizz",
+    "pluralName": "quizzes",
+    "displayName": "Quizzes"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "time_limit": {
+      "type": "integer",
+      "default": 15,
+      "unique": false,
+      "required": true
+    },
+    "create_by": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::userss.userss"
+    },
+    "questions": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::question.question",
+      "mappedBy": "quizz_id"
+    }
+  }
+}

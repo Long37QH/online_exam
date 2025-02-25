@@ -1,0 +1,31 @@
+{
+    "kind": "collectionType",
+    "collectionName": "questions",
+    "info": {
+        "singularName": "question",
+        "pluralName": "questions",
+        "displayName": "Questions"
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "attributes": {
+        "quest_text": {
+            "type": "string",
+            "required": true,
+            "unique": true
+        },
+        "quizz_id": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::quizz.quizz",
+            "inversedBy": "questions"
+        },
+        "answers": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::answer.answer",
+            "mappedBy": "quest_id"
+        }
+    }
+}

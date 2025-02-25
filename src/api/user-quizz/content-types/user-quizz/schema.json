@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "user_quizzes",
+  "info": {
+    "singularName": "user-quizz",
+    "pluralName": "user-quizzes",
+    "displayName": "UserQuizz"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "score": {
+      "type": "decimal",
+      "required": true,
+      "default": 0
+    },
+    "start_at": {
+      "type": "time",
+      "required": true
+    },
+    "completed_at": {
+      "type": "time",
+      "required": false
+    },
+    "user_id": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::userss.userss"
+    },
+    "quizz_id": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::quizz.quizz"
+    }
+  }
+}
