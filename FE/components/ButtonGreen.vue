@@ -1,7 +1,7 @@
 <template>
   <div>
     <button :class="props.class_"
-      class="text-center bg-[#25a149] hover:bg-[#008526] duration-300 rounded-xl text-white font-bold text-[20px] cursor-pointer">
+      class="text-center bg-greenPrimary hover:bg-greenPrimary-hover duration-300 rounded-xl text-white font-bold text-big cursor-pointer">
       {{ props.content }}
     </button>
   </div>

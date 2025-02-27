@@ -1,8 +1,8 @@
 <template>
-  <div class="ShowQuiz bg-[#EDFDEB] w-full h-[94px] flex justify-between items-center rounded-xl">
+  <div class="ShowQuiz bg-grayLight-QuizShow w-full h-quizShow flex justify-between items-center rounded-xl">
     <div class="ml-7">
-      <p class="text-[24px] font-bold">{{ quizName }}<span class="text-[16px] font-normal ml-2">{{ author }}</span></p>
-      <p class="text-[16px] font-light">{{ quizDate }}</p>
+      <p class="text-title font-bold">{{ quizName }}<span class="text-regular font-normal ml-2">{{ author }}</span></p>
+      <p class="text-regular font-light">{{ quizDate }}</p>
     </div>
 
     <div class="mr-7 flex flex-col items-center">

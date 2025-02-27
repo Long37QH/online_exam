@@ -1,9 +1,12 @@
 @import "tailwindcss";
 
+html {
+    @apply font-roboto;
+}
+
 @theme {
     /* Font Fam */
     --font-roboto: "Roboto", sans-serif;
-
 
     /* Colors */
     --color-greenPrimary: #25a149;
@@ -17,13 +20,16 @@
     --color-grayLight: #9D9D9D;
 
     --color-grayLight-QuizContain: #f9f9f9;
-    --color-grayInput-LoginBg: #F3F8F2;
-    --color-grayInput-SearchBg: #9D9D9D;
+    --color-grayLight-QuizShow: #EDFDEB;
+
+    --color-grayInput: #F3F8F2;
 
     --color-gray-InfoBtn: #766E6E;
 
     --color-gray-IconWarn: #697077;
     --color-gray-IconWarnBg: #DDE1E6;
+
+    --color-answerTxt: #21272A;
 
 
     /* Text Size */
@@ -37,20 +43,22 @@
 
     /* Height */
     --height-header: 80px;
+    --height-quizShow: 94px;
+    --height-quizContain: 102px;
+
     --height-input: 48px;
     --height-inputSearch: 40px;
 
     --height-btn: 48px;
     --height-btn-info: 54px;
 
+    /* Width */
+    --width-btn-takeExam: 136px;
+    --width-searchInput: 361px;
+
 
     /* Breakpoints */
     --breakpoint-mobile: 430px;
     --breakpoint-tablet: 768px;
     --breakpoint-desktop: 1024px;
-
-
-    /* Grid */
-    --grid-gap: 20px;
-    --grid-gap-2: 40px;
 }

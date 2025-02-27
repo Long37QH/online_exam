@@ -1,20 +1,21 @@
 <template>
-  <div class="QuizContain bg-[#f9f8f9] w-full h-[102px] rounded-3xl items-center flex justify-between mb-[25px]">
+  <div
+    class="QuizContain bg-grayLight-QuizContain w-full h-quizContain rounded-3xl items-center flex justify-between mb-[25px]">
     <div class="ml-10 text-center">
-      <p class="font-sans text-2xl font-bold">{{ quizName }}</p>
-      <p class="text-[16px] font-light">{{ quizDate }}</p>
+      <p class="text-title font-bold">{{ quizName }}</p>
+      <p class="text-regular font-light">{{ quizDate }}</p>
     </div>
     <div class="text-center">
-      <p class="font-sans text-[16px] font-bold">{{ time }} phút / {{ questCount }} câu hỏi</p>
-      <p class="text-[16px] font-light">{{ author }}</p>
+      <p class="text-regular font-bold">{{ time }} phút / {{ questCount }} câu hỏi</p>
+      <p class="text-regular font-light">{{ author }}</p>
     </div>
 
     <div class="mr-10">
-      <ButtonGreen @click="goToQuiz" content="Vào thi" class_="w-[136px] h-[48px]" />
+      <ButtonGreen @click="goToQuiz" content="Vào thi" class_="w-btn-takeExam h-btn" />
 
       <!-- Show score if it have -->
       <div v-if="props.score" class="mt-[7px] text-center text-red-600">
-        <p class="text-[16px] font-bold">{{ props.score }} điểm</p>
+        <p class="text-regular font-bold">{{ props.score }} điểm</p>
       </div>
     </div>
   </div>
