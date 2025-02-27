@@ -1,0 +1,56 @@
+@import "tailwindcss";
+
+@theme {
+    /* Font Fam */
+    --font-roboto: "Roboto", sans-serif;
+
+
+    /* Colors */
+    --color-greenPrimary: #25a149;
+    --color-greenPrimary-hover: #008526;
+    --color-greenLight: #eaf5ed;
+
+    --color-redPrimary: #DA1E28;
+    --color-redLight: #fceaea;
+
+    --color-grayDark: #C1C7CD;
+    --color-grayLight: #9D9D9D;
+
+    --color-grayLight-QuizContain: #f9f9f9;
+    --color-grayInput-LoginBg: #F3F8F2;
+    --color-grayInput-SearchBg: #9D9D9D;
+
+    --color-gray-InfoBtn: #766E6E;
+
+    --color-gray-IconWarn: #697077;
+    --color-gray-IconWarnBg: #DDE1E6;
+
+
+    /* Text Size */
+    --text-small: 14px;
+    --text-regular: 16px;
+    --text-large: 18px;
+    --text-big: 20px;
+    --text-title: 24px;
+    --text-largest: 42px;
+
+
+    /* Height */
+    --height-header: 80px;
+    --height-input: 48px;
+    --height-inputSearch: 40px;
+
+    --height-btn: 48px;
+    --height-btn-info: 54px;
+
+
+    /* Breakpoints */
+    --breakpoint-mobile: 430px;
+    --breakpoint-tablet: 768px;
+    --breakpoint-desktop: 1024px;
+
+
+    /* Grid */
+    --grid-gap: 20px;
+    --grid-gap-2: 40px;
+}
