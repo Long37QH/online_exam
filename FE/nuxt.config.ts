@@ -16,4 +16,10 @@ export default defineNuxtConfig({
       svgLoader(),
     ],
   },
+  modules: ['nuxt-graphql-client'],
+  runtimeConfig: {
+    public: {
+      GQL_HOST: 'http://localhost:1337/graphql'
+    }
+  },
 })

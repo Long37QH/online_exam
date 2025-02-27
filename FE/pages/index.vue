@@ -5,7 +5,10 @@
 </template>
 
 <script lang="ts" setup>
+const data = await GqlGetQuizzes();
+const quizzes = data.quizzes;
 
+console.log(quizzes);
 </script>
 
 <style></style>
