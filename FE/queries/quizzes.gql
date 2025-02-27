@@ -1,0 +1,14 @@
+query GetQuizzes{
+  quizzes {
+    name
+    time_limit
+    documentId
+    questions {
+      quest_text
+      answers {
+        answer_text
+        is_true
+      }
+    }
+  }
+}

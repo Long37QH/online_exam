@@ -1,0 +1,26 @@
+BE/node_modules
+
+# Nuxt dev/build outputs
+FE/.output
+FE/.data
+FE/.nuxt
+FE/.nitro
+FE/.cache
+FE/dist
+
+# Node dependencies
+FE/node_modules
+
+# Logs
+FE/logs
+FE/*.log
+
+# Misc
+FE/.DS_Store
+FE/.fleet
+FE/.idea
+
+# Local env files
+FE/.env
+FE/.env.*
+FE/!.env.example

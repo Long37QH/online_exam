@@ -1,0 +1,10 @@
+query GetQuests($documentId: ID!){
+  quizz(documentId: $documentId) {
+    questions {
+      quest_text
+      answers {
+        answer_text
+      }
+    }
+  }
+}

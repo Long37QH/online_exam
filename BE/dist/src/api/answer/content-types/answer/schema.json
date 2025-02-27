@@ -1,0 +1,30 @@
+{
+    "kind": "collectionType",
+    "collectionName": "answers",
+    "info": {
+        "singularName": "answer",
+        "pluralName": "answers",
+        "displayName": "Answers",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": true
+    },
+    "attributes": {
+        "answer_text": {
+            "type": "string",
+            "required": true,
+            "unique": true
+        },
+        "quest_id": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::question.question",
+            "inversedBy": "answers"
+        },
+        "is_true": {
+            "type": "boolean",
+            "required": true
+        }
+    }
+}
