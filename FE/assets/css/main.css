@@ -63,15 +63,3 @@ html {
     --breakpoint-desktop: 1024px;
 
 }
-
-.lg-container {
-    @apply max-w-[1024px] mx-auto px-20 bg-amber-400;
-}
-
-.md-container {
-    @apply max-w-[768px] min-w-[430px] mx-auto px-10 bg-amber-400;
-}
-
-.sm-container {
-    @apply max-w-[429px] mx-auto px-5 bg-amber-400;
-}

@@ -8,7 +8,7 @@
 
     <div class="relative mr-20">
       <button class="flex cursor-pointer" @click="toggleDropdown">
-        <p class="text-regular mr-2">Duy Anh</p>
+        <p class="text-regular mr-2">{{ authStore.user ? authStore.user?.username :  'Khách' }}</p>
         <IconArrowDown />
       </button>
 
@@ -17,7 +17,7 @@
         <ul>
           <li class="p-2 hover:bg-[#f9f8f9] cursor-pointer" @click="navigateTo('/')">Tài khoản</li>
           <li class="p-2 hover:bg-[#f9f8f9] cursor-pointer" @click="navigateTo('/')">Bảng điểm</li>
-          <li class="p-2 hover:bg-[#f9f8f9] cursor-pointer" @click="navigateTo('/')">Đăng xuất</li>
+          <li class="p-2 hover:bg-[#f9f8f9] cursor-pointer" @click="handleLogout">Đăng xuất</li>
         </ul>
       </div>
     </div>
@@ -29,9 +29,11 @@ import IconBook from '~/assets/icon/book.svg';
 import IconArrowDown from '~/assets/icon/arrowDown.svg';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
 
 const dropdownOpen = ref(false)
 const router = useRouter()
+const authStore = useAuthStore();
 
 const toggleDropdown = () => {
   dropdownOpen.value = !dropdownOpen.value
@@ -41,6 +43,15 @@ const navigateTo = (path) => {
   router.push(path);
   dropdownOpen.value = false;
 }
+const handleLogout = async () => {
+  try {
+    authStore.logout(); 
+    router.push('/authentication/login');
+  } catch (error) {
+    console.error("Lỗi khi đăng xuất:", error);
+  }
+};
+
 </script>
 
 <style></style>
