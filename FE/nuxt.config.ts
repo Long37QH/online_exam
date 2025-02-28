@@ -16,7 +16,7 @@ export default defineNuxtConfig({
       svgLoader(),
     ],
   },
-  modules: ['nuxt-graphql-client'],
+  modules: ['nuxt-graphql-client', '@pinia/nuxt'],
   runtimeConfig: {
     public: {
       GQL_HOST: 'http://localhost:1337/graphql'

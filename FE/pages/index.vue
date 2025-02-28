@@ -9,6 +9,9 @@
 // const quizzes = data.quizzes;
 
 // console.log(quizzes);
+definePageMeta({
+  middleware: 'auth'
+})
 </script>
 
 <style></style>
