@@ -28,7 +28,7 @@ html {
 
     --color-gray-IconWarn: #697077;
     --color-gray-IconWarnBg: #DDE1E6;
-
+    
     --color-answerTxt: #21272A;
 
 
@@ -61,4 +61,5 @@ html {
     --breakpoint-mobile: 430px;
     --breakpoint-tablet: 768px;
     --breakpoint-desktop: 1024px;
+
 }
