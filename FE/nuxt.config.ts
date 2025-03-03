@@ -19,7 +19,8 @@ export default defineNuxtConfig({
   modules: ['nuxt-graphql-client', '@pinia/nuxt'],
   runtimeConfig: {
     public: {
-      GQL_HOST: 'http://localhost:1337/graphql'
+      GQL_HOST: 'http://localhost:1337/graphql',
+      authCookieSecure: true // Để test trên localhost, khi deploy set true
     }
   },
 })

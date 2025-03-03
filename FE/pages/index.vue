@@ -7,11 +7,8 @@
 <script lang="ts" setup>
 // const data = await GqlGetQuizzes();
 // const quizzes = data.quizzes;
-
 // console.log(quizzes);
 definePageMeta({
   middleware: 'auth'
 })
 </script>
-
-<style></style>
