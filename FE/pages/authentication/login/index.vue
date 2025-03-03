@@ -32,6 +32,8 @@ import { useRouter } from 'vue-router'
 import InputField from '../../../components/InputField.vue'
 import Button from '../../../components/Button.vue'
 import { useAuthStore } from '../../../stores/auth'
+import { onMounted } from 'vue'
+
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -48,6 +50,16 @@ const errors = ref({
   password: ''
 })
 
+onMounted(() => {
+  const savedToken = localStorage.getItem('jwt');
+  const savedUser = localStorage.getItem('user');
+
+  if (savedToken && savedUser) {
+    authStore.setAuthData(savedToken, JSON.parse(savedUser));
+    router.push('/');
+  }
+});
+
 definePageMeta({
   layout: "auth"
 })
@@ -57,14 +69,11 @@ const validateEmail = (email) => {
   return emailPattern.test(email);
 };
 
-
 watch(form, (newForm) => {
-  errors.value.email = !newForm.email ? 'Email không được để trống' : 
-                      !validateEmail(newForm.email) ? 'Email không hợp lệ' : '';
-
+  errors.value.email = !newForm.email ? 'Email không được để trống' :
+    !validateEmail(newForm.email) ? 'Email không hợp lệ' : '';
   errors.value.password = !newForm.password ? 'Mật khẩu không được để trống' : '';
 }, { deep: true });
-
 const isDisabled = computed(() => !form.value.email.trim() || !form.value.password.trim())
 
 const handleLogin = async () => {
@@ -84,7 +93,8 @@ const handleLogin = async () => {
     if (response?.login?.jwt && response?.login?.user) {
       authStore.setAuthData(response.login.jwt, response.login.user);
       if (form.value.rememberMe) {
-        localStorage.setItem('rememberMe', 'true');
+        localStorage.setItem('jwt', response.login.jwt);
+        localStorage.setItem('user', JSON.stringify(response.login.user));
       }
       router.push('/');
     } else {
