@@ -19,7 +19,7 @@
       </form>
       <hr class="mt-6 border-t border-gray-300 my-4">
       <p class="mt-4 text-gray-600 text-center">
-        <NuxtLink to="/" class="text-green-800 hover:underline flex items-start">Đăng ký tài khoản cho giáo viên?
+        <NuxtLink to="/authentication/register" class="text-green-800 hover:underline flex items-start">Đăng ký tài khoản cho giáo viên?
         </NuxtLink>
       </p>
     </div>
@@ -51,11 +51,7 @@ const errors = ref({
 })
 
 onMounted(() => {
-  const savedToken = localStorage.getItem('jwt');
-  const savedUser = localStorage.getItem('user');
-
-  if (savedToken && savedUser) {
-    authStore.setAuthData(savedToken, JSON.parse(savedUser));
+  if (authStore.token) {
     router.push('/');
   }
 });
@@ -93,11 +89,8 @@ const handleLogin = async () => {
     });
 
     if (response?.login?.jwt && response?.login?.user) {
-      authStore.setAuthData(response.login.jwt, response.login.user);
-      if (form.value.rememberMe) {
-        localStorage.setItem('jwt', response.login.jwt);
-        localStorage.setItem('user', JSON.stringify(response.login.user));
-      }
+      authStore.setAuthData(response.login.jwt, response.login.user, form.value.rememberMe);
+
       router.push('/');
     } else {
       errors.value.password = 'Sai tài khoản hoặc mật khẩu!';
