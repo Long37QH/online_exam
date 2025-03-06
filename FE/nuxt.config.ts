@@ -20,7 +20,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       GQL_HOST: 'http://localhost:1337/graphql',
-      authCookieSecure: true // Để test trên localhost, khi deploy set true
+      authCookieSecure: true, 
+      apiBase: process.env.API_BASE_URL || 'http://localhost:1337/api',
     }
   },
+  
 })
