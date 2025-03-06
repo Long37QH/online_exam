@@ -34,6 +34,7 @@ import Button from '../../../components/Button.vue'
 import { useAuthStore } from '../../../stores/auth'
 import { onMounted } from 'vue'
 
+const { $axios } = useNuxtApp();
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -81,15 +82,19 @@ const handleLogin = async () => {
   loading.value = true;
 
   try {
-    const response = await GqlLogin({
-      input: {
-        identifier: form.value.email,
-        password: form.value.password
-      }
+    // const response = await GqlLogin({
+    //   input: {
+    //     identifier: form.value.email,
+    //     password: form.value.password
+    //   }
+    // });
+    const response = await $axios.post('auth/local', {
+      identifier: form.value.email,
+      password: form.value.password
     });
 
-    if (response?.login?.jwt && response?.login?.user) {
-      authStore.setAuthData(response.login.jwt, response.login.user, form.value.rememberMe);
+    if (response?.data?.jwt && response?.data?.user) {
+      authStore.setAuthData(response.data.jwt, response.data.user, form.value.rememberMe);
 
       router.push('/');
     } else {

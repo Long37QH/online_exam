@@ -42,9 +42,9 @@ import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import InputField from '../../../components/InputField.vue'
 import Button from '../../../components/Button.vue'
-import useAxios from '../../../plugins/axios'
 
-const axios = useAxios()
+const { $axios } = useNuxtApp();
+
 const router = useRouter()
 const loading = ref(false)
 
@@ -115,8 +115,9 @@ const handleRegister = async () => {
   loading.value = true;
 
   try {
-    const response = await axios.post('auth/local/register', {
-      username: form.value.username,
+    const response = await $axios.post('auth/local/register', {
+      fullname: form.value.username,
+      username: form.value.email,
       password: form.value.password,
       email: form.value.email,
       phone: form.value.phonenumber
