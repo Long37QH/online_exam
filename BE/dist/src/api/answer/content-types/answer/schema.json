@@ -16,15 +16,15 @@
             "required": true,
             "unique": true
         },
+        "is_true": {
+            "type": "boolean",
+            "required": true
+        },
         "quest_id": {
             "type": "relation",
             "relation": "manyToOne",
             "target": "api::question.question",
             "inversedBy": "answers"
-        },
-        "is_true": {
-            "type": "boolean",
-            "required": true
         }
     }
 }

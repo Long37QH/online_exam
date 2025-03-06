@@ -1,0 +1,5 @@
+query CheckTrueAnswer($documentId: ID!) {
+  answer(documentId: $documentId) {
+    is_true
+  }
+}

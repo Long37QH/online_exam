@@ -1,0 +1,40 @@
+query GetStudent($documentId: ID!) {
+  usersPermissionsUser(documentId: $documentId) {
+    fullname
+    email
+    phone
+    class
+    avatar_id
+    avatar {
+      url
+    }
+  }
+}
+
+query GetStudentId{
+  me {
+    id
+    documentId
+  }
+}
+
+mutation UpdateStudent(
+  $userId: ID!, 
+  $newName: String, 
+  $newEmail: String, 
+  $newPhone: Int
+  $newPassword: String
+) {
+  updateUsersPermissionsUser(id: $userId, data: {
+    fullname: $newName
+    email: $newEmail
+    phone: $newPhone
+    password: $newPassword
+  }) {
+    data {
+      fullname
+      email
+      phone
+    }
+  }
+}

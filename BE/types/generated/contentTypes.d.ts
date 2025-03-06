@@ -405,6 +405,7 @@ export interface ApiAnswerAnswer extends Struct.CollectionTypeSchema {
 export interface ApiQuestionQuestion extends Struct.CollectionTypeSchema {
   collectionName: 'questions';
   info: {
+    description: '';
     displayName: 'Questions';
     pluralName: 'questions';
     singularName: 'question';
@@ -427,7 +428,7 @@ export interface ApiQuestionQuestion extends Struct.CollectionTypeSchema {
     quest_text: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
-    quizz_id: Schema.Attribute.Relation<'manyToOne', 'api::quizz.quizz'>;
+    quizz_ids: Schema.Attribute.Relation<'manyToMany', 'api::quizz.quizz'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -437,6 +438,7 @@ export interface ApiQuestionQuestion extends Struct.CollectionTypeSchema {
 export interface ApiQuizzQuizz extends Struct.CollectionTypeSchema {
   collectionName: 'quizzes';
   info: {
+    description: '';
     displayName: 'Quizzes';
     pluralName: 'quizzes';
     singularName: 'quizz';
@@ -445,9 +447,14 @@ export interface ApiQuizzQuizz extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    create_by: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    exam_date: Schema.Attribute.Date;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::quizz.quizz'> &
       Schema.Attribute.Private;
@@ -455,7 +462,10 @@ export interface ApiQuizzQuizz extends Struct.CollectionTypeSchema {
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
     publishedAt: Schema.Attribute.DateTime;
-    questions: Schema.Attribute.Relation<'oneToMany', 'api::question.question'>;
+    questions: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::question.question'
+    >;
     time_limit: Schema.Attribute.Integer &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<15>;
@@ -465,45 +475,10 @@ export interface ApiQuizzQuizz extends Struct.CollectionTypeSchema {
   };
 }
 
-export interface ApiUserAnswerUserAnswer extends Struct.CollectionTypeSchema {
-  collectionName: 'user_answers';
-  info: {
-    displayName: 'UserAnswer';
-    pluralName: 'user-answers';
-    singularName: 'user-answer';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    answer_id: Schema.Attribute.Relation<'oneToOne', 'api::answer.answer'>;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::user-answer.user-answer'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    question_id: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::question.question'
-    >;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    user_quizz_id: Schema.Attribute.Relation<
-      'oneToOne',
-      'api::user-quizz.user-quizz'
-    >;
-  };
-}
-
 export interface ApiUserQuizzUserQuizz extends Struct.CollectionTypeSchema {
   collectionName: 'user_quizzes';
   info: {
+    description: '';
     displayName: 'UserQuizz';
     pluralName: 'user-quizzes';
     singularName: 'user-quizz';
@@ -512,7 +487,7 @@ export interface ApiUserQuizzUserQuizz extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
-    completed_at: Schema.Attribute.Time;
+    completed_at: Schema.Attribute.DateTime;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -524,13 +499,20 @@ export interface ApiUserQuizzUserQuizz extends Struct.CollectionTypeSchema {
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     quizz_id: Schema.Attribute.Relation<'oneToOne', 'api::quizz.quizz'>;
+    result: Schema.Attribute.JSON;
     score: Schema.Attribute.Decimal &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<0>;
-    start_at: Schema.Attribute.Time & Schema.Attribute.Required;
+    start_at: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    status_user_quiz: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Not done'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user: Schema.Attribute.Relation<
+      'manyToOne',
+      'plugin::users-permissions.user'
+    >;
   };
 }
 
@@ -991,7 +973,10 @@ export interface PluginUsersPermissionsUser
     draftAndPublish: false;
   };
   attributes: {
+    avatar: Schema.Attribute.Media<'images' | 'files'>;
+    avatar_id: Schema.Attribute.Integer;
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    class: Schema.Attribute.String;
     confirmationToken: Schema.Attribute.String & Schema.Attribute.Private;
     confirmed: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     createdAt: Schema.Attribute.DateTime;
@@ -1014,9 +999,10 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
-    phone: Schema.Attribute.String & Schema.Attribute.Required;
+    phone: Schema.Attribute.Integer;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
+    quizzes_created: Schema.Attribute.Relation<'oneToMany', 'api::quizz.quizz'>;
     resetPasswordToken: Schema.Attribute.String & Schema.Attribute.Private;
     role: Schema.Attribute.Relation<
       'manyToOne',
@@ -1025,6 +1011,10 @@ export interface PluginUsersPermissionsUser
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user_quizzes: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-quizz.user-quizz'
+    >;
     username: Schema.Attribute.String &
       Schema.Attribute.SetMinMaxLength<{
         minLength: 3;
@@ -1045,7 +1035,6 @@ declare module '@strapi/strapi' {
       'api::answer.answer': ApiAnswerAnswer;
       'api::question.question': ApiQuestionQuestion;
       'api::quizz.quizz': ApiQuizzQuizz;
-      'api::user-answer.user-answer': ApiUserAnswerUserAnswer;
       'api::user-quizz.user-quizz': ApiUserQuizzUserQuizz;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;

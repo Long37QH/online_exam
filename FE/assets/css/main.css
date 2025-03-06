@@ -11,7 +11,8 @@ html {
     /* Colors */
     --color-greenPrimary: #25a149;
     --color-greenPrimary-hover: #008526;
-    --color-greenLight: #eaf5ed;
+    --color-greenLight: color-mix(in srgb, white 100%, #25A249 40%);
+    --color-greenAwartIcon: color-mix(in srgb, white 100%, #25A249 20%);
 
     --color-redPrimary: #DA1E28;
     --color-redLight: #fceaea;
@@ -23,12 +24,13 @@ html {
     --color-grayLight-QuizShow: #EDFDEB;
 
     --color-grayInput: #F3F8F2;
+    --color-grayBorder-Profile: #DDE1E6;
 
     --color-gray-InfoBtn: #766E6E;
 
     --color-gray-IconWarn: #697077;
     --color-gray-IconWarnBg: #DDE1E6;
-    
+
     --color-answerTxt: #21272A;
 
 
@@ -45,6 +47,7 @@ html {
     --height-header: 80px;
     --height-quizShow: 94px;
     --height-quizContain: 102px;
+    --height-examComplete: 180px;
 
     --height-input: 48px;
     --height-inputSearch: 40px;
@@ -52,14 +55,42 @@ html {
     --height-btn: 48px;
     --height-btn-info: 54px;
 
+    --height-profileContain: 660px;
+
+    --height-avatar: 96px;
+
+
     /* Width */
+    --width-searchInput-Quizzes: 361px;
+    --width-searchInput: 467px;
+    --width-examComplete: 460px;
+
     --width-btn-takeExam: 136px;
-    --width-searchInput: 361px;
+    --width-btn-info: 325px;
+    --width-btn-uploadPhoto: 176px;
+
+
+    --width-profileContain: 700px;
+
+    --width-avatar: 96px;
 
 
     /* Breakpoints */
     --breakpoint-mobile: 430px;
     --breakpoint-tablet: 768px;
     --breakpoint-desktop: 1024px;
+}
 
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Nền tối nhẹ */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
 }

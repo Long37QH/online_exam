@@ -4,7 +4,8 @@
   "info": {
     "singularName": "quizz",
     "pluralName": "quizzes",
-    "displayName": "Quizzes"
+    "displayName": "Quizzes",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -23,9 +24,18 @@
     },
     "questions": {
       "type": "relation",
-      "relation": "oneToMany",
+      "relation": "manyToMany",
       "target": "api::question.question",
-      "mappedBy": "quizz_id"
+      "mappedBy": "quizz_ids"
+    },
+    "exam_date": {
+      "type": "date"
+    },
+    "create_by": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "quizzes_created"
     }
   }
 }

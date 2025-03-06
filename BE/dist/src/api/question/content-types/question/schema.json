@@ -4,7 +4,8 @@
     "info": {
         "singularName": "question",
         "pluralName": "questions",
-        "displayName": "Questions"
+        "displayName": "Questions",
+        "description": ""
     },
     "options": {
         "draftAndPublish": true
@@ -15,9 +16,9 @@
             "required": true,
             "unique": true
         },
-        "quizz_id": {
+        "quizz_ids": {
             "type": "relation",
-            "relation": "manyToOne",
+            "relation": "manyToMany",
             "target": "api::quizz.quizz",
             "inversedBy": "questions"
         },

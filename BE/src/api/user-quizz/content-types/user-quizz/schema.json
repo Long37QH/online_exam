@@ -4,7 +4,8 @@
   "info": {
     "singularName": "user-quizz",
     "pluralName": "user-quizzes",
-    "displayName": "UserQuizz"
+    "displayName": "UserQuizz",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -16,17 +17,30 @@
       "default": 0
     },
     "start_at": {
-      "type": "time",
+      "type": "datetime",
       "required": true
     },
     "completed_at": {
-      "type": "time",
+      "type": "datetime",
       "required": false
     },
     "quizz_id": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::quizz.quizz"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "plugin::users-permissions.user",
+      "inversedBy": "user_quizzes"
+    },
+    "status_user_quiz": {
+      "type": "string",
+      "default": "Not done"
+    },
+    "result": {
+      "type": "json"
     }
   }
 }
