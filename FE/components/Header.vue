@@ -8,7 +8,7 @@
 
     <div class="relative mr-20">
       <button class="flex cursor-pointer" @click="toggleDropdown">
-        <p class="text-regular mr-2">{{ authStore.user ? authStore.user?.username :  'Khách' }}</p>
+        <p class="text-regular mr-2">{{ authStore.user ? authStore.user?.fullname :  'Khách' }}</p>
         <IconArrowDown />
       </button>
 

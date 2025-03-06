@@ -7,7 +7,7 @@
       :value="modelValue"
       @input="$emit('update:modelValue', $event.target.value)"
       :class="[
-        'w-full p-3 border-b-gray-300 rounded-lg focus:outline-none bg-teal-50 text-neutral-800 border-b-1',
+        'w-full p-3 border-b-gray-300 rounded-lg focus:outline-none bg-teal-50 text-neutral-800 focus:ring-2 focus:ring-green-500 border-b-1',
         className
       ]"
       :placeholder="placeholder"

@@ -19,7 +19,7 @@
       </form>
       <hr class="mt-6 border-t border-gray-300 my-4">
       <p class="mt-4 text-gray-600 text-center">
-        <NuxtLink to="/" class="text-green-800 hover:underline flex items-start">Đăng ký tài khoản cho giáo viên?
+        <NuxtLink to="/authentication/register" class="text-green-800 hover:underline flex items-start">Đăng ký tài khoản cho giáo viên?
         </NuxtLink>
       </p>
     </div>
@@ -34,6 +34,7 @@ import Button from '../../../components/Button.vue'
 import { useAuthStore } from '../../../stores/auth'
 import { onMounted } from 'vue'
 
+const { $axios } = useNuxtApp();
 
 const router = useRouter()
 const authStore = useAuthStore()
@@ -51,11 +52,7 @@ const errors = ref({
 })
 
 onMounted(() => {
-  const savedToken = localStorage.getItem('jwt');
-  const savedUser = localStorage.getItem('user');
-
-  if (savedToken && savedUser) {
-    authStore.setAuthData(savedToken, JSON.parse(savedUser));
+  if (authStore.token) {
     router.push('/');
   }
 });
@@ -85,19 +82,20 @@ const handleLogin = async () => {
   loading.value = true;
 
   try {
-    const response = await GqlLogin({
-      input: {
-        identifier: form.value.email,
-        password: form.value.password
-      }
+    // const response = await GqlLogin({
+    //   input: {
+    //     identifier: form.value.email,
+    //     password: form.value.password
+    //   }
+    // });
+    const response = await $axios.post('auth/local', {
+      identifier: form.value.email,
+      password: form.value.password
     });
 
-    if (response?.login?.jwt && response?.login?.user) {
-      authStore.setAuthData(response.login.jwt, response.login.user);
-      if (form.value.rememberMe) {
-        localStorage.setItem('jwt', response.login.jwt);
-        localStorage.setItem('user', JSON.stringify(response.login.user));
-      }
+    if (response?.data?.jwt && response?.data?.user) {
+      authStore.setAuthData(response.data.jwt, response.data.user, form.value.rememberMe);
+
       router.push('/');
     } else {
       errors.value.password = 'Sai tài khoản hoặc mật khẩu!';
