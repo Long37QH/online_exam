@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white min-h-screen flex mt-10 justify-center">
-    <div class="bg-white p-8 rounded-lg w-3/6 not-sm:w-full">
+    <div class="bg-white rounded-lg w-3/6 not-sm:w-full">
       <h2 class="text-2xl font-bold mb-6 text-center text-neutral-800">
         Đặt lại mật khẩu
       </h2>
@@ -39,7 +39,7 @@
         v-if="successMessage" 
         :title="'Thành công!'" 
         :content="successMessage"
-        className="absolute bottom-10 px-4 py-3 rounded-lg shadow-lg animate-fade-in !w-1/2"
+        className="absolute bottom-20 rounded-lg shadow-lg animate-fade-in !w-1/2"
       />
       </div>
     </div>

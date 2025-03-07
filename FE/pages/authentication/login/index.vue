@@ -95,7 +95,7 @@ const handleLogin = async () => {
     
     if (response?.data?.jwt && response?.data?.user) {
       authStore.setAuthData(response.data.jwt, response.data.user, form.value.rememberMe);
-
+    
       router.push('/');
     } else {
       errors.value.password = 'Sai tài khoản hoặc mật khẩu!';

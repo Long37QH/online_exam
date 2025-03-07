@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white min-h-screen flex mt-10 justify-center ">
-    <div class="bg-white p-8 rounded-lg w-3/6 not-sm:w-full">
+    <div class="bg-white rounded-lg w-3/6 not-sm:w-full">
       <h2 class="text-2xl font-bold mb-6 text-center text-neutral-800">
         Quên mật khẩu
       </h2>
@@ -14,7 +14,16 @@
         </div>
         <Button :disabled="isDisabled || loading" content="Xác thực email" />
       </form>
+      <div class="w-1/2">
+        <SuccessAlert 
+        v-if="successMessage" 
+        :title="'Thành công!'" 
+        :content="successMessage"
+        className="absolute bottom-20 rounded-lg shadow-lg animate-fade-in  !w-1/2"
+      />
+      </div>
     </div>
+    
   </div>
 </template>
 
@@ -22,9 +31,11 @@
 import { ref, computed, watch } from 'vue'
 import InputField from '../../../components/InputField.vue'
 import Button from '../../../components/Button.vue'
+import SuccessAlert from "../../../components/SuccessAlert.vue";
 
 const email = ref('')
 const emailError = ref('')
+const successMessage = ref("");
 
 const loading = ref(false)
 
@@ -55,7 +66,7 @@ const handleVerifyEmail = async () => {
     });
 
     if (response.forgotPassword.ok) {
-      emailError.value = "Email xác thực đã được gửi. Hãy kiểm tra hộp thư.";
+      successMessage.value = "Email xác thực đã được gửi. Hãy kiểm tra hộp thư.";
     } else {
       emailError.value = "Lỗi! Vui lòng thử lại.";
     }
