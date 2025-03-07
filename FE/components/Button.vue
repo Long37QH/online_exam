@@ -1,12 +1,9 @@
 <template>
-  <button
-    :class="[
-      disabled ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-green-600 text-white hover:bg-green-700',
-      'w-full p-3 rounded-lg transition duration-300 flex items-center justify-center gap-2',
-      className
-    ]"
-    :disabled="disabled"
-  >
+  <button :class="[
+    disabled ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : 'bg-greenPrimary text-white hover:bg-greenPrimary-hover',
+    'w-full p-3 rounded-lg transition duration-300 flex items-center justify-center gap-2',
+    className
+  ]" :disabled="disabled">
     <img v-if="imgLeft" :src="imgLeft" alt="icon" class="w-5 h-5" />
     {{ content }}
   </button>

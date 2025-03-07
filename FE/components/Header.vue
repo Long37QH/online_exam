@@ -8,15 +8,15 @@
 
     <div class="relative mr-20">
       <button class="flex cursor-pointer" @click="toggleDropdown">
-        <p class="text-regular mr-2">{{ authStore.user ? authStore.user?.fullname :  'Khách' }}</p>
+        <p class="text-regular mr-2">{{ authStore.user ? authStore.user?.fullname : 'Khách' }}</p>
         <IconArrowDown />
       </button>
 
       <!-- Dropdown box -->
       <div v-if="dropdownOpen" class="absolute top-[40px] right-0 w-[150px] bg-white shadow rounded-lg">
         <ul>
-          <li class="p-2 hover:bg-[#f9f8f9] cursor-pointer" @click="navigateTo('/')">Tài khoản</li>
-          <li class="p-2 hover:bg-[#f9f8f9] cursor-pointer" @click="navigateTo('/')">Bảng điểm</li>
+          <li class="p-2 hover:bg-[#f9f8f9] cursor-pointer" @click="navigateTo('/profile')">Tài khoản</li>
+          <li class="p-2 hover:bg-[#f9f8f9] cursor-pointer" @click="navigateTo('/profile/history')">Bảng điểm</li>
           <li class="p-2 hover:bg-[#f9f8f9] cursor-pointer" @click="handleLogout">Đăng xuất</li>
         </ul>
       </div>
@@ -45,7 +45,7 @@ const navigateTo = (path) => {
 }
 const handleLogout = async () => {
   try {
-    authStore.logout(); 
+    authStore.logout();
     router.push('/authentication/login');
   } catch (error) {
     console.error("Lỗi khi đăng xuất:", error);

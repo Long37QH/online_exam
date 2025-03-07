@@ -19,10 +19,11 @@ export default defineNuxtConfig({
   modules: ['nuxt-graphql-client', '@pinia/nuxt'],
   runtimeConfig: {
     public: {
-      GQL_HOST: 'http://localhost:1337/graphql',
-      authCookieSecure: true, 
+      apiUrl: process.env.STRAPI_URL,
+      GQL_HOST: process.env.STRAPI_GRAPHQL_API_URL,
+      authCookieSecure: true,
       apiBase: process.env.API_BASE_URL || 'http://localhost:1337/api',
     }
   },
-  
+
 })

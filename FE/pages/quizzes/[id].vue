@@ -4,18 +4,18 @@
       <!-- #################################################################################################### -->
       <!-- Quests block -->
       <div class="w-3/4 border-r-2 border-[#DFDFDF]">
-        <div class="flex justify-between mt-[74px] mb-6 mx-[60px]">
-          <ShowQuiz quizName="Đề Thi 1" quizDate="25/02/2025" author="Mr. admin" :time="35" :questCount="10" />
+        <div class="sticky top-5 mt-[74px] mb-6 mx-[60px]">
+          <ShowQuiz :quizName="quizInfo.name" :quizDate="formatDate(quizInfo.exam_date)"
+            :author="quizInfo.create_by.fullname" :time="quizInfo.time_limit" :questCount="totalQuest"
+            @autoSubmit="handleSubmit" />
         </div>
 
         <!-- Show Quest -->
         <div class="ml-28">
           <QuestContain v-for="(question, index) in questions" :key="index" :questNumber="index + 1"
-            :questContent="question.quest_text" :options="question.answers?.map(a => a.answer_text)"
-            @answer-selected="handleAnswer" />
+            :question="question" @answer-selected="handleAnswer" />
         </div>
       </div>
-
 
 
       <!-- #################################################################################################### -->
@@ -34,34 +34,126 @@
           </div>
         </div>
 
-        <ButtonGreen content="Nộp bài" class_="mx-auto w-full h-btn mt-5" />
+        <Button content="Nộp bài" @click="handleSubmit"
+          className="mx-auto mt-5 bg-greenPrimary hover:bg-greenPrimary-hover text-white font-bold text-big cursor-pointer" />
       </div>
+    </div>
+
+    <div v-if="showExamComplete" class="modal-overlay" @click.self="closeModal">
+      <ExamComplete :text="'Bài thi của bạn đã hoàn thành'" :score="Number(score.toFixed(2))" @close="closeModal" />
     </div>
   </div>
 </template>
 
 <script setup>
 import { computed, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
 
 const route = useRoute();
+const router = useRouter();
 
-const data = await GqlGetQuests({ documentId: route.params.id });
-const questions = data.quizz.questions;
-console.log(questions);
+// AUTH
+const authStore = useAuthStore();
+useGqlToken("Bearer " + authStore.token);
+
+// Get the student's id
+const stutentIdData = await GqlGetStudentId();
+const studentIds = stutentIdData.me;
+
+// Initialize refs
+const userQuizzId = ref('');
+const answeredQuestions = ref([]);
+const result = ref([]);
+const score = ref(0);
+const showExamComplete = ref(false);
+
+// Get current time func
+const getDateTime = () => new Date().toISOString();
+
+// Create user quizz when page mounted
+onMounted(async () => {
+  try {
+    const startTime = getDateTime();
+    const response = await GqlCreateUserQuizz({
+      "data": {
+        "score": score.value,
+        "start_at": startTime,
+        "status_user_quiz": "Processing",
+        "quizz_id": route.params.id,
+        "result": result.value,
+        "user": studentIds.documentId
+      }
+    });
+    userQuizzId.value = response.createUserQuizz.documentId;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+});
+
+// Get Quests & Quiz info
+const questionsData = await GqlGetQuizz({ documentId: route.params.id });
+const quizInfo = questionsData.quizz;
+const questions = quizInfo.questions;
 
 const totalQuest = questions.length;
-const answeredQuestions = ref([]);
+const scoreOfQuest = 100 / totalQuest;
 
 const totalQuestFomatted = computed(() => String(totalQuest).padStart(2, '0'));
 const totalSelectFomatted = computed(() => String(answeredQuestions.value.length).padStart(2, '0'));
 
-const handleAnswer = (questNumber) => {
+// Handle answer event
+// https://vuejs.org/guide/components/events.html  --- Docs
+const handleAnswer = (questNumber, questId, answerId) => {
   if (!answeredQuestions.value.includes(questNumber)) {
     answeredQuestions.value.push(questNumber);
   }
+
+  const index = result.value.findIndex(item => item.question_id === questId);
+  if (index === -1) {
+    result.value.push({ question_id: questId, answer_id: answerId });
+  } else {
+    result.value[index].answer_id = answerId;
+  };
+}
+
+// Handle submit
+const handleSubmit = async () => {
+  for (const answer of result.value) {
+    try {
+      const response = await GqlCheckTrueAnswer({
+        documentId: answer.answer_id
+      });
+
+      if (response.answer.is_true) {
+        score.value += scoreOfQuest;
+      }
+    } catch (error) {
+      console.error("Lỗi khi kiểm tra đáp án:", error);
+    }
+  }
+
+  const response = await GqlSubmitUserQuizz({
+    "documentId": userQuizzId.value,
+    "data": {
+      "score": Number(score.value.toFixed(2)), // typeof(score.value.toFixed(2)) = string
+      "completed_at": getDateTime(),
+      "status_user_quiz": "Done",
+      "result": result.value
+    }
+  })
+
+  showExamComplete.value = true;
+}
+
+const closeModal = () => {
+  showExamComplete.value = false;
+  router.push("/profile/history")
 };
 
+// Format date func
+const formatDate = (date) => {
+  const [year, month, day] = date.split('-')
+  return `${day}/${month}/${year}`
+}
 </script>
-
-<style></style>

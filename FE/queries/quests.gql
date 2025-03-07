@@ -1,10 +1,8 @@
-query GetQuests($documentId: ID!){
-  quizz(documentId: $documentId) {
-    questions {
-      quest_text
-      answers {
-        answer_text
-      }
+query GetQuest($documentId: ID!){
+  question(documentId: $documentId) {
+    answers {
+      documentId
+      is_true
     }
   }
 }

@@ -1,13 +1,34 @@
 query GetQuizzes{
-  quizzes {
+  quizzes(pagination:  {
+     limit: 50
+  }) {
     name
     time_limit
+    exam_date
     documentId
+    create_by {
+      fullname
+    }
     questions {
+      quest_text
+    }
+  }
+}
+
+query GetQuizz($documentId: ID!){
+  quizz(documentId: $documentId) {
+    name
+    time_limit
+    exam_date
+    create_by {
+      fullname
+    }
+    questions {
+      documentId
       quest_text
       answers {
         answer_text
-        is_true
+        documentId
       }
     }
   }

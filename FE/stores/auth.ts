@@ -11,6 +11,10 @@ export const useAuthStore = defineStore('auth', {
       if (rememberMe) {
         const tokenCookie = useCookie<string | null>('token', { maxAge: 60 * 60 * 24 * 7 })
         tokenCookie.value = token
+      } else {
+        // Cập nhật cookie session (sẽ bị mất khi tắt trình duyệt)
+        const tokenCookie = useCookie<string | null>('token')
+        tokenCookie.value = token
       }
 
       this.token = token

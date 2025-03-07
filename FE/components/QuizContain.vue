@@ -1,7 +1,7 @@
 <template>
   <div
     class="QuizContain bg-grayLight-QuizContain w-full h-quizContain rounded-3xl items-center flex justify-between mb-[25px]">
-    <div class="ml-10 text-center">
+    <div class="ml-10 text-center w-52">
       <p class="text-title font-bold">{{ quizName }}</p>
       <p class="text-regular font-light">{{ quizDate }}</p>
     </div>
@@ -11,11 +11,8 @@
     </div>
 
     <div class="mr-10">
-      <ButtonGreen @click="goToQuiz" content="Vào thi" class_="w-btn-takeExam h-btn" />
-
-      <!-- Show score if it have -->
-      <div v-if="props.score" class="mt-[7px] text-center text-red-600">
-        <p class="text-regular font-bold">{{ props.score }} điểm</p>
+      <div class="w-btn-takeExam">
+        <Button @click="goToQuiz" content="Vào thi" className="font-bold text-big cursor-pointer" />
       </div>
     </div>
   </div>
@@ -30,7 +27,6 @@ interface QuizContainProps {
   time: number;
   questCount: number;
   author: string;
-  score?: number;
   quizId?: string;
 }
 
@@ -42,5 +38,3 @@ const goToQuiz = () => {
   // console.log(props.quizId);
 };
 </script>
-
-<style></style>

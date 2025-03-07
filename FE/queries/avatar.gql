@@ -1,0 +1,27 @@
+mutation UploadAvatar($userId: ID!, $avatarId: ID, $storeAvatarId: Int) {
+  updateUsersPermissionsUser(id: $userId, data: {
+    avatar: $avatarId, 
+    avatar_id: $storeAvatarId
+  }) {
+    data {
+      avatar {
+        url
+      }
+    }
+  }
+}
+
+mutation DeleteAvatar($userId: ID!, $fileId: ID!){
+  deleteUploadFile(id: $fileId) {
+    url
+    name
+  }
+
+  updateUsersPermissionsUser(id: $userId, data:  {
+     avatar_id: null
+  }) {
+    data {
+      avatar_id
+    }
+  }
+}
