@@ -1,27 +1,40 @@
 import { defineStore } from 'pinia'
-import { useCookie } from 'nuxt/app'
+import { useCookie, useNuxtApp } from 'nuxt/app'
 
 export const useAuthStore = defineStore('auth', {
   state: () => ({
-    token: useCookie<string | null>('token', { default: () => null }),
     user: null as any | null
   }),
+  getters: {
+    token: () => useCookie<string | null>('token', { default: () => null }).value
+  },
   actions: {
     setAuthData(token: string, user: any, rememberMe: boolean) {
-      if (rememberMe) {
-        const tokenCookie = useCookie<string | null>('token', { maxAge: 60 * 60 * 24 * 7 })
-        tokenCookie.value = token
-      }
+      const tokenCookie = useCookie<string | null>('token', {
+        maxAge: rememberMe ? 60 * 60 * 24 * 7 : undefined
+      })
+      tokenCookie.value = token
 
-      this.token = token
       this.user = user
     },
     logout() {
       const tokenCookie = useCookie<string | null>('token')
       tokenCookie.value = null
-
-      this.token = null
       this.user = null
+    },
+    async initializeAuth() {
+      const tokenCookie = useCookie<string | null>('token')
+      if (tokenCookie.value) {
+        const { $axios } = useNuxtApp() 
+        try {
+          const response = await $axios.get('/users/me', {
+            headers: { Authorization: `Bearer ${tokenCookie.value}` }
+          })
+          this.user = response.data
+        } catch (error) {
+          this.logout()
+        }
+      }
     }
   }
 })

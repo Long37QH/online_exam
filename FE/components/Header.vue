@@ -8,7 +8,7 @@
 
     <div class="relative mr-20">
       <button class="flex cursor-pointer" @click="toggleDropdown">
-        <p class="text-regular mr-2">{{ authStore.user ? authStore.user?.fullname :  'Khách' }}</p>
+        <p class="text-regular mr-2">{{ authStore.user ? authStore.user?.fullname : 'Khách' }}</p>
         <IconArrowDown />
       </button>
 
@@ -30,10 +30,15 @@ import IconArrowDown from '~/assets/icon/arrowDown.svg';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../stores/auth';
+import { onMounted } from 'vue'
 
 const dropdownOpen = ref(false)
 const router = useRouter()
 const authStore = useAuthStore();
+
+onMounted(() => {
+  authStore.initializeAuth()
+})
 
 const toggleDropdown = () => {
   dropdownOpen.value = !dropdownOpen.value
@@ -45,7 +50,7 @@ const navigateTo = (path) => {
 }
 const handleLogout = async () => {
   try {
-    authStore.logout(); 
+    authStore.logout();
     router.push('/authentication/login');
   } catch (error) {
     console.error("Lỗi khi đăng xuất:", error);
