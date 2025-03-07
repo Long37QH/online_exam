@@ -1,60 +1,111 @@
 <template>
-  <div class="QuizzesPage">
-    <div class="flex w-full h-screen">
-      <!-- #################################################################################################### -->
-      <!-- Quizzes block -->
-      <div class="w-3/4 border-r-2 border-[#DFDFDF]">
-        <div class="flex justify-between mt-8 mb-6 mx-[60px]">
-          <p class="text-2xl font-bold">Danh sách đề thi</p>
+  <div class="flex w-full h-full">
+    <!-- #################################################################################################### -->
+    <!-- Quizzes block -->
+    <div class="w-3/4 border-r-2 border-[#DFDFDF] flex flex-col h-full">
+      <div class="flex justify-between mt-8 mb-6 mx-[60px]">
+        <p class="text-2xl font-bold">Danh sách đề thi</p>
 
-          <div class="w-searchInput h-10 bg-grayInput rounded-xl flex items-center text-grayLight group">
-            <div class="w-6 h-6 ml-4 mr-2 group-focus-within:text-black duration-300">
-              <IconSearch />
-            </div>
-            <input type="text" placeholder="Tìm kiếm" class="text-regular font-light outline-none" />
-          </div>
-        </div>
-
-
-        <!-- Show quizzes -->
-        <div class="QuizzesContain mx-28">
-          <QuizContain v-for="(quiz, i) in quizzes" :key="i" :quizName="quiz.name" :quizId="quiz.documentId"
-            quizDate="25/02/2025" :time="quiz.time_limit" :questCount="quiz.questions.length" author="Mr. Admin" />
+        <!-- Search block -->
+        <div class="w-searchInput-Quizzes">
+          <Search v-model="searchValue" />
         </div>
       </div>
 
 
+      <!-- Show quizzes -->
+      <div class="QuizzesContain mx-28">
+        <QuizContain v-for="(quiz, i) in paginatedQuizzes" :key="i" :quizName="quiz.name" :quizId="quiz.documentId"
+          :quizDate="formatDate(quiz.exam_date)" :time="quiz.time_limit" :questCount="quiz.questions.length"
+          :author="quiz.create_by.fullname" />
+      </div>
 
-      <!-- #################################################################################################### -->
-      <!-- User block -->
-      <div class="mx-auto mt-[74px]">
-        <img src="/avatar.png" alt="" class="rounded-full w-[96px] h-[96px] mb-6 mx-auto" />
-        <p class="text-xl font-bold text-center mb-6">Trần Duy Anh</p>
+      <!-- Pagination Navigation -->
+      <div class="fixed bottom-0 left-1/3 flex justify-center mb-24">
+        <PaginationNavigation v-model="currentPage" :totalPages="totalPages" />
+      </div>
+    </div>
 
-        <div class="w-[184px] mx-auto">
-          <p class="text-[#21272A] text-regular mb-3 font-light">
-            duyanh@gmail.com
-          </p>
-          <p class="text-[#21272A] text-regular mb-3 font-light">
-            Ngày sinh: 08/12/2002
-          </p>
-          <p class="text-[#21272A] text-regular mb-6 font-light">Khóa: 20</p>
-        </div>
 
-        <button @click="$router.push('/quiz')"
-          class="w-[325px] h-[54px] border-2 border-gray-InfoBtn rounded-2xl text-gray-InfoBtn hover:bg-gray-InfoBtn hover:text-white hover:font-bold cursor-pointer duration-300">
-          Chỉnh sửa thông tin cá nhân
-        </button>
+
+    <!-- #################################################################################################### -->
+    <!-- User block -->
+    <div class="mx-auto mt-[74px]">
+      <img :src="student.avatar ? config.public.apiUrl + student.avatar.url : '/avatar.png'" alt=""
+        class="rounded-full w-[96px] h-[96px] mb-6 mx-auto" />
+      <p class="text-xl font-bold text-center mb-6">{{ student.fullname }}</p>
+
+      <div class="w-[184px] mx-auto">
+        <p class="text-[#21272A] text-regular mb-3 font-light">
+          {{ student.email }}
+        </p>
+        <p class="text-[#21272A] text-regular mb-3 font-light">
+          +84 {{ student.phone }}
+        </p>
+        <p class="text-[#21272A] text-regular mb-6 font-light">Khóa: {{ student.class }}</p>
+      </div>
+
+      <div class="w-btn-info">
+        <Button @click="$router.push('/profile')" content="Chỉnh sửa thông tin cá nhân"
+          className="h-btn-info bg-white border-2 border-gray-InfoBtn !text-gray-InfoBtn hover:!bg-gray-InfoBtn hover:!text-white hover:font-bold cursor-pointer" />
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import IconSearch from '~/assets/icon/search.svg';
+import { ref } from 'vue';
+import { useAuthStore } from '../stores/auth';
 
-const data = await GqlGetQuizzes();
+const config = useRuntimeConfig();
 
-const quizzes = data.quizzes;
-// console.log(quizzes);
+// AUTH
+const authStore = useAuthStore();
+useGqlToken("Bearer " + authStore.token);
+
+// Get the student's id
+const stutentIdData = await GqlGetStudentId();
+const studentIds = stutentIdData.me;
+
+// Get quizzes & students
+const quizzesData = await GqlGetQuizzes();
+const studentData = await GqlGetStudent({ "documentId": studentIds.documentId });
+
+const student = studentData.usersPermissionsUser;
+const quizzes = quizzesData.quizzes;
+
+// For search
+const searchValue = ref('');
+
+const filteredQuizzes = computed(() => {
+  return quizzes.filter(q => {
+    const searchTerm = searchValue.value.toLowerCase();
+    return (
+      q.name.toLowerCase().includes(searchTerm) ||
+      q.create_by.fullname.toLowerCase().includes(searchTerm)
+    );
+  });
+});
+
+// For pagination
+const currentPage = ref(1)
+const itemsPerPage = 5
+
+const totalPages = computed(() => Math.ceil(filteredQuizzes.value.length / itemsPerPage));
+
+const paginatedQuizzes = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return filteredQuizzes.value.slice(start, end);
+});
+
+watch(searchValue, () => {
+  currentPage.value = 1;
+});
+
+// Format Date
+const formatDate = (date) => {
+  const [year, month, day] = date.split('-')
+  return `${day}/${month}/${year}`
+}
 </script>

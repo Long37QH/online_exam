@@ -8,13 +8,15 @@
 </template>
 
 <script lang="ts" setup>
-import Tick from '../assets/icon/tick.svg';
+import Tick from '~/assets/icon/tick.svg';
 
 interface TickProps {
     title: string;
     content: string;
-    className? : string;
+    className?: string;
 }
 
 const props = defineProps<TickProps>();
 </script>
+
+<style></style>

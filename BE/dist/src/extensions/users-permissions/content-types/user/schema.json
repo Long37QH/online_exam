@@ -64,12 +64,37 @@
             "unique": false,
             "required": false
         },
-        "phone": {
-            "type": "string",
-            "required": true
-        },
         "fullname": {
             "type": "string"
+        },
+        "quizzes_created": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::quizz.quizz",
+            "mappedBy": "create_by"
+        },
+        "user_quizzes": {
+            "type": "relation",
+            "relation": "oneToMany",
+            "target": "api::user-quizz.user-quizz",
+            "mappedBy": "user"
+        },
+        "avatar": {
+            "allowedTypes": [
+                "images",
+                "files"
+            ],
+            "type": "media",
+            "multiple": false
+        },
+        "avatar_id": {
+            "type": "integer"
+        },
+        "class": {
+            "type": "string"
+        },
+        "phone": {
+            "type": "integer"
         }
     }
 }
