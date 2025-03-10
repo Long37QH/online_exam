@@ -1,6 +1,5 @@
 <template>
-    <div :class="className"
-        class="flex items-center w-full h-btn rounded-xl bg-greenLight border-l-4 border-greenPrimary duration-300">
+    <div :class="className" class="flex items-center w-full h-btn rounded-xl bg-greenLight border-l-4 border-greenPrimary duration-300">
         <div class="text-greenPrimary mx-4">
             <Tick />
         </div>

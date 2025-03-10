@@ -13,7 +13,7 @@
             <input v-model="form.rememberMe" type="checkbox" id="rememberMe" class="mr-2">
             <label for="rememberMe" class="text-neutral-800">Lưu tài khoản</label>
           </div>
-          <NuxtLink to="/" class="text-green-800 hover:underline">Quên mật khẩu?</NuxtLink>
+          <NuxtLink to="/authentication/verifyemail" class="text-green-800 hover:underline">Quên mật khẩu?</NuxtLink>
         </div>
         <Button @click="handleLogin" content="Đăng nhập" :disabled="isDisabled || loading" />
       </form>
@@ -92,10 +92,10 @@ const handleLogin = async () => {
       identifier: form.value.email,
       password: form.value.password
     });
-
+    
     if (response?.data?.jwt && response?.data?.user) {
       authStore.setAuthData(response.data.jwt, response.data.user, form.value.rememberMe);
-
+    
       router.push('/');
     } else {
       errors.value.password = 'Sai tài khoản hoặc mật khẩu!';
