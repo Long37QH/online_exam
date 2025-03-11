@@ -1,4 +1,5 @@
 BE/node_modules
+BE/.tmp/
 
 # Nuxt dev/build outputs
 FE/.output

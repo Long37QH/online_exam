@@ -24,11 +24,6 @@
             "type": "datetime",
             "required": false
         },
-        "quizz_id": {
-            "type": "relation",
-            "relation": "oneToOne",
-            "target": "api::quizz.quizz"
-        },
         "user": {
             "type": "relation",
             "relation": "manyToOne",
@@ -41,6 +36,12 @@
         },
         "result": {
             "type": "json"
+        },
+        "quiz": {
+            "type": "relation",
+            "relation": "manyToOne",
+            "target": "api::quizz.quizz",
+            "inversedBy": "user_quizzes"
         }
     }
 }

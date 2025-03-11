@@ -1,10 +1,10 @@
 query GetUserQuizz($userId: ID!) {
   usersPermissionsUser(documentId: $userId) {
     user_quizzes(
-      filters:  { publishedAt:  { notNull: true} }
-      pagination:  { limit: 50 }
+      filters: { publishedAt: { notNull: true } }
+      pagination: { limit: 50 }
     ) {
-      quizz_id {
+      quiz {
         questions {
           quest_text
         }
@@ -25,7 +25,7 @@ mutation CreateUserQuizz($data: UserQuizzInput!) {
     start_at
     completed_at
     status_user_quiz
-    quizz_id {
+    quiz {
       name
       documentId
     }
@@ -36,19 +36,33 @@ mutation CreateUserQuizz($data: UserQuizzInput!) {
   }
 }
 
-mutation SubmitUserQuizz($documentId: ID!, $data: UserQuizzInput!){
+mutation SubmitUserQuizz($documentId: ID!, $data: UserQuizzInput!) {
   updateUserQuizz(documentId: $documentId, data: $data) {
     score
     start_at
     completed_at
     status_user_quiz
-    quizz_id {
+    quiz {
       name
       documentId
     }
     result
     user {
       fullname
+    }
+  }
+}
+
+query GetListUserQuizz($documentId: ID!) {
+  quizz(documentId: $documentId) {
+    user_quizzes {
+      user {
+        fullname
+        username
+      }
+      score
+      createdAt
+      status_user_quiz
     }
   }
 }
