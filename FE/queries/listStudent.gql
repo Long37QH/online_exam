@@ -1,0 +1,59 @@
+query GetListStudentByRole(
+  $roleId: ID!
+  $page: Int
+  $pageSize: Int
+  $class: String
+) {
+  usersPermissionsRole(documentId: $roleId) {
+    users_connection(
+      pagination: { page: $page, pageSize: $pageSize }
+      filters: { class: { eq: $class } }
+    ) {
+      nodes {
+        username
+        email
+        phone
+        class
+      }
+    }
+  }
+}
+
+mutation CreateUsersPermissionsUser($data: UsersPermissionsUserInput!) {
+  createUsersPermissionsUser(data: $data) {
+    data {
+      username
+      email
+      phone
+      class
+      role {
+        documentId
+        name
+      }
+    }
+  }
+}
+
+mutation DeleteUsersStudent($UserId: ID!) {
+  deleteUsersPermissionsUser(id: $UserId) {
+    data {
+      documentId
+      username
+      email
+    }
+  }
+}
+
+mutation UpdateUsersPermissionsUser(
+  $UserId: ID!
+  $data: UsersPermissionsUserInput!
+) {
+  updateUsersPermissionsUser(id: $UserId, data: $data) {
+    data {
+      username
+      email
+      phone
+      class
+    }
+  }
+}

@@ -80,12 +80,13 @@
             "mappedBy": "user"
         },
         "avatar": {
+            "type": "media",
+            "multiple": false,
+            "required": false,
             "allowedTypes": [
                 "images",
                 "files"
-            ],
-            "type": "media",
-            "multiple": false
+            ]
         },
         "avatar_id": {
             "type": "integer"
@@ -94,7 +95,7 @@
             "type": "string"
         },
         "phone": {
-            "type": "integer"
+            "type": "string"
         }
     }
 }

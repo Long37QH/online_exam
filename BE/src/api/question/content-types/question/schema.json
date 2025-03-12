@@ -16,17 +16,17 @@
       "required": true,
       "unique": true
     },
-    "quizz_ids": {
-      "type": "relation",
-      "relation": "manyToMany",
-      "target": "api::quizz.quizz",
-      "inversedBy": "questions"
-    },
     "answers": {
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::answer.answer",
       "mappedBy": "quest_id"
+    },
+    "quizz_id": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::quizz.quizz",
+      "inversedBy": "questions"
     }
   }
 }

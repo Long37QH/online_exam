@@ -11,7 +11,7 @@ query GetStudent($documentId: ID!) {
   }
 }
 
-query GetStudentId{
+query GetStudentId {
   me {
     id
     documentId
@@ -19,18 +19,21 @@ query GetStudentId{
 }
 
 mutation UpdateStudent(
-  $userId: ID!, 
-  $newName: String, 
-  $newEmail: String, 
-  $newPhone: Int
+  $userId: ID!
+  $newName: String
+  $newEmail: String
+  $newPhone: String
   $newPassword: String
 ) {
-  updateUsersPermissionsUser(id: $userId, data: {
-    fullname: $newName
-    email: $newEmail
-    phone: $newPhone
-    password: $newPassword
-  }) {
+  updateUsersPermissionsUser(
+    id: $userId
+    data: {
+      fullname: $newName
+      email: $newEmail
+      phone: $newPhone
+      password: $newPassword
+    }
+  ) {
     data {
       fullname
       email

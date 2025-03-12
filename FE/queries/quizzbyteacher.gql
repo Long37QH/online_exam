@@ -1,0 +1,35 @@
+query GetListQuizzByTeacher(
+  $documentId: ID!
+  $class: String
+  $number_ques: Int
+  $startus: String
+  $page: Int
+  $pageSize: Int
+) {
+  usersPermissionsUser(documentId: $documentId) {
+    quizzes_created(
+      filters: {
+        publishedAt: { notNull: true }
+        class: { eq: $class }
+        number_ques: { eq: $number_ques }
+        startus: { eq: $startus }
+      }
+      pagination: { page: $page, pageSize: $pageSize }
+    ) {
+      documentId
+      name
+      number_ques
+      exam_date
+      time_limit
+      startus
+      class
+    }
+  }
+}
+
+query GetTeacherId {
+  me {
+    id
+    documentId
+  }
+}

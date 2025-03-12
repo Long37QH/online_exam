@@ -24,9 +24,9 @@
     },
     "questions": {
       "type": "relation",
-      "relation": "manyToMany",
+      "relation": "oneToMany",
       "target": "api::question.question",
-      "mappedBy": "quizz_ids"
+      "mappedBy": "quizz_id"
     },
     "exam_date": {
       "type": "date"
@@ -36,6 +36,21 @@
       "relation": "manyToOne",
       "target": "plugin::users-permissions.user",
       "inversedBy": "quizzes_created"
+    },
+    "class": {
+      "type": "string"
+    },
+    "number_ques": {
+      "type": "integer"
+    },
+    "startus": {
+      "type": "string"
+    },
+    "user_quizzes": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::user-quizz.user-quizz",
+      "mappedBy": "quiz"
     }
   }
 }

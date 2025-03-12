@@ -428,7 +428,7 @@ export interface ApiQuestionQuestion extends Struct.CollectionTypeSchema {
     quest_text: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
-    quizz_ids: Schema.Attribute.Relation<'manyToMany', 'api::quizz.quizz'>;
+    quizz_id: Schema.Attribute.Relation<'manyToOne', 'api::quizz.quizz'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -447,6 +447,7 @@ export interface ApiQuizzQuizz extends Struct.CollectionTypeSchema {
     draftAndPublish: true;
   };
   attributes: {
+    class: Schema.Attribute.String;
     create_by: Schema.Attribute.Relation<
       'manyToOne',
       'plugin::users-permissions.user'
@@ -461,17 +462,20 @@ export interface ApiQuizzQuizz extends Struct.CollectionTypeSchema {
     name: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
+    number_ques: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
-    questions: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::question.question'
-    >;
+    questions: Schema.Attribute.Relation<'oneToMany', 'api::question.question'>;
+    startus: Schema.Attribute.String;
     time_limit: Schema.Attribute.Integer &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<15>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    user_quizzes: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::user-quizz.user-quizz'
+    >;
   };
 }
 
@@ -498,7 +502,7 @@ export interface ApiUserQuizzUserQuizz extends Struct.CollectionTypeSchema {
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
-    quizz_id: Schema.Attribute.Relation<'oneToOne', 'api::quizz.quizz'>;
+    quiz: Schema.Attribute.Relation<'manyToOne', 'api::quizz.quizz'>;
     result: Schema.Attribute.JSON;
     score: Schema.Attribute.Decimal &
       Schema.Attribute.Required &
@@ -999,7 +1003,7 @@ export interface PluginUsersPermissionsUser
       Schema.Attribute.SetMinMaxLength<{
         minLength: 6;
       }>;
-    phone: Schema.Attribute.Integer;
+    phone: Schema.Attribute.String;
     provider: Schema.Attribute.String;
     publishedAt: Schema.Attribute.DateTime;
     quizzes_created: Schema.Attribute.Relation<'oneToMany', 'api::quizz.quizz'>;
