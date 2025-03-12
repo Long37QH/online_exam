@@ -109,7 +109,7 @@ useGqlToken("Bearer " + authStore.token);
 const teacherIdData = await GqlGetTeacherId();
 const teacherIds = teacherIdData.me;
 
-console.log("role tk", teacherIds.role);
+console.log(teacherIds.role);
 
 const router = useRouter();
 const quizzes = ref([]);
