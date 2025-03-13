@@ -1,7 +1,5 @@
-query GetQuizzes{
-  quizzes(pagination:  {
-     limit: 50
-  }) {
+query GetQuizzes {
+  quizzes(pagination: { limit: 50 }) {
     name
     time_limit
     exam_date
@@ -15,7 +13,7 @@ query GetQuizzes{
   }
 }
 
-query GetQuizz($documentId: ID!){
+query GetQuizz($documentId: ID!) {
   quizz(documentId: $documentId) {
     name
     time_limit
@@ -31,5 +29,33 @@ query GetQuizz($documentId: ID!){
         documentId
       }
     }
+  }
+}
+
+mutation CreateQuizz($data: QuizzInput!) {
+  createQuizz(data: $data) {
+    name
+    number_ques
+    time_limit
+    start_time
+    end_time
+    exam_date
+    class
+    documentId
+  }
+}
+
+mutation UpdateQuizz($documentId: ID!, $data: QuizzInput!) {
+  updateQuizz(documentId: $documentId, data: $data) {
+    documentId
+    name
+    class
+    exam_date
+  }
+}
+
+mutation DeleteQuizz($documentId: ID!) {
+  deleteQuizz(documentId: $documentId) {
+    documentId
   }
 }

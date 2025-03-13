@@ -455,6 +455,7 @@ export interface ApiQuizzQuizz extends Struct.CollectionTypeSchema {
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    end_time: Schema.Attribute.Time;
     exam_date: Schema.Attribute.Date;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::quizz.quizz'> &
@@ -465,6 +466,7 @@ export interface ApiQuizzQuizz extends Struct.CollectionTypeSchema {
     number_ques: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
     questions: Schema.Attribute.Relation<'oneToMany', 'api::question.question'>;
+    start_time: Schema.Attribute.Time;
     startus: Schema.Attribute.String;
     time_limit: Schema.Attribute.Integer &
       Schema.Attribute.Required &

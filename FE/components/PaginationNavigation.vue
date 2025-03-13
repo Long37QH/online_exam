@@ -1,5 +1,5 @@
 <template>
-  <div class="flex justify-end my-1.5 space-x-2">
+  <div :class="['flex justify-end my-1.5 space-x-2', containerClass]">
     <button
       @click="prevPage"
       :disabled="modelValue === 1"
@@ -9,17 +9,19 @@
     </button>
 
     <button
-      v-for="page in totalPages"
-      :key="page"
-      @click="goToPage(page)"
+      v-for="page in paginationPages"
+      :key="page.key"
+      @click="!page.isEllipsis && goToPage(page.number)"
       :class="[
         'px-4 py-2 rounded cursor-pointer font-bold',
-        modelValue === page
+        modelValue === page.number
           ? 'bg-[#EDFDEB] text-greenPrimary-hover'
           : 'bg-white text-greenPrimary',
+        page.isEllipsis && 'cursor-default',
       ]"
+      :disabled="page.isEllipsis"
     >
-      {{ page }}
+      {{ page.isEllipsis ? "..." : page.number }}
     </button>
 
     <button
@@ -33,9 +35,11 @@
 </template>
 
 <script lang="ts" setup>
+import { computed } from "vue";
 interface PaginationNavigationProps {
   modelValue: number;
   totalPages: number;
+  containerClass?: string;
 }
 
 const props = defineProps<PaginationNavigationProps>();
@@ -60,4 +64,37 @@ const goToPage = (page: number) => {
     emit("update:modelValue", page);
   }
 };
+
+// Tính toán các trang hiển thị, thêm "..." khi cần
+const paginationPages = computed(() => {
+  const pages = [];
+  const { modelValue, totalPages } = props;
+
+  if (totalPages <= 5) {
+    for (let i = 1; i <= totalPages; i++) {
+      pages.push({ number: i, isEllipsis: false, key: i });
+    }
+  } else {
+    pages.push({ number: 1, isEllipsis: false, key: 1 });
+
+    if (modelValue > 3) {
+      pages.push({ number: -1, isEllipsis: true, key: "start-ellipsis" });
+    }
+
+    const start = Math.max(2, modelValue - 1);
+    const end = Math.min(totalPages - 1, modelValue + 1);
+
+    for (let i = start; i <= end; i++) {
+      pages.push({ number: i, isEllipsis: false, key: i });
+    }
+
+    if (modelValue < totalPages - 2) {
+      pages.push({ number: -1, isEllipsis: true, key: "end-ellipsis" });
+    }
+
+    pages.push({ number: totalPages, isEllipsis: false, key: totalPages });
+  }
+
+  return pages;
+});
 </script>
