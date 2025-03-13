@@ -23,6 +23,8 @@ query GetListQuizzByTeacher(
       time_limit
       startus
       class
+      start_time
+      end_time
     }
   }
 }

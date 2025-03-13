@@ -51,6 +51,12 @@
             "relation": "oneToMany",
             "target": "api::user-quizz.user-quizz",
             "mappedBy": "quiz"
+        },
+        "start_time": {
+            "type": "time"
+        },
+        "end_time": {
+            "type": "time"
         }
     }
 }
